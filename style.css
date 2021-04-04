@@ -4,13 +4,13 @@
 }
 
 .btn-info, .btn-success { border-radius: 2px; }
-.btn-info { background-color: #2f4050; border: 0; }
+.btn-info, .btn-info:visited { background-color: #2f4050; border: 0; }
 .btn-info:hover { background-color: #263948; border: 0; }
 .btn-info:active {
     background-color: #263948 !important;
     border: 0 !important;
 }
-.btn-success { background-color: #5cb229; border: 0; }
+.btn-success, .btn-success:visited { background-color: #5cb229; border: 0; }
 .btn-success:hover { background-color: #54a525; border: 0; }
 .btn-success:active {
     background-color: #54a525 !important;
@@ -19,9 +19,9 @@
 
 .card { border-radius: 2px; border: 1px solid #6c757d; }
 
-.btn-link { color: #00264b }
+.btn-link, .btn-link:visited { color: #00264b }
 .btn-link:hover { color: rgb(50, 55, 61) }
-.btn-outline-secondary { 
+.btn-outline-secondary, .btn-outline-secondary:visited { 
     border-radius: 2px; 
     font-size: 1rem; 
     background-color: #d35032; 
