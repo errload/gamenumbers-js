@@ -34,4 +34,18 @@
 }
 
 .card-header { border-bottom: 1px solid #6c757d; }
-.card-footer { border-top: 1px solid #6c757d; }
+.cardFooter { border-top: 1px solid #6c757d; display: none; padding: 10px; }
+
+.gameQuestions { display: none; }
+.gameInput { display: block; }
+.gameStart { display: none; }
+.gameButtons { display: none; }
+.gameText { font-size: 1.75rem; }
+
+.btnGameInput { padding: 15px 30px; }
+.btnGameText { padding: 15px 30px; }
+
+input::placeholder { font-size: 1rem; }
+label { font-size: 1.25rem; }
+input { font-size: 1.5rem !important; }
+#orderNumberField { font-size: 1.5rem; }

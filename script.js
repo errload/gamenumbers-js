@@ -7,6 +7,16 @@ let minValue, //  минимальное значение
 const orderNumberField = document.querySelector('#orderNumberField');
 const answerField = document.querySelector('#answerField');
 
+const gameStart = document.querySelector('.gameStart');
+const gameQuestions = document.querySelector('.gameQuestions');
+const gameButtons = document.querySelector('.gameButtons');
+const cardFooter = document.querySelector('.cardFooter');
+const gameInput = document.querySelector('.gameInput');
+const gameText = document.querySelector('.gameText');
+
+const minValueForm = document.querySelector('.minValueForm');
+const maxValueForm = document.querySelector('.maxValueForm');
+
 function numbersToString(numbers) {
 
     let result = '';
@@ -153,31 +163,61 @@ function numbersToString(numbers) {
 }
 
 function startGame() {
-    // берем минимальные и максимальные значения
-    minValue = parseInt(prompt('Минимальное знание числа для игры','0'));
-    maxValue = parseInt(prompt('Максимальное знание числа для игры','100'));
+    // обнуляем формы и поля ввода
+    orderNumberField.textContent = 'Угадайка';      
+    gameStart.style.display = 'none';
+    gameQuestions.style.display = 'none';
+    gameButtons.style.display = 'none';
+    cardFooter.style.display = 'none';
+    gameInput.style.display = 'block';
 
-    // проверяем являются ли они число и находятся ли в диапазоне -999 и 999
-    // иначе возвращаем 0 и 100
-    minValue = isNaN(minValue) ? 0 : minValue < -999 ? -999 : minValue;
-    maxValue = isNaN(maxValue) ? 100 : maxValue > 999 ? 999 : maxValue;
+    minValueForm.value = 0;
+    maxValueForm.value = 100;
 
-    // если минимальное введено больше максимального, заставляем ввести заново
-    if (minValue > maxValue) {
-        alert('Вы ввели некорректное число, минимальное значение не может быть больше максимального.');
-        startGame();
-    } else {
-        alert(`Загадайте любое целое число от ${minValue} до ${maxValue}, а я его угадаю!`);
-    }
+    // предлагаем ввести минимальные и максимальные значения числа
+    document.querySelector('.btnGameInput').addEventListener('click', () => {
+        // берем минимальное и максимальное значение из формы и преобразуем в число
+        minValue = parseInt(minValueForm.value);
+        maxValue = parseInt(maxValueForm.value);
 
-    // делим значения пополам и даем средний результат первого вопроса
-    answerNumber = Math.floor((minValue + maxValue) / 2);
-    orderNumber = 1;
-    // запуск игры
-    gameRun = true;
+        // проверяем являются ли значения числом и находятся ли в диапазоне -999 и 999
+        // иначе возвращаем 0 и 100
+        minValue = isNaN(minValue) ? 0 : minValue < -999 ? -999 : minValue;
+        maxValue = isNaN(maxValue) ? 100 : maxValue > 999 ? 999 : maxValue;
 
-    orderNumberField.textContent = orderNumber;
-    answerField.textContent = `Вы загадали число ${numbersToString(answerNumber)}?`;
+        // прячем блок с вводом значений и предлагаем загадать число
+        gameInput.style.display = 'none';
+        cardFooter.style.display = 'block';
+        gameStart.style.display = 'block';
+
+        // если минимальное введено больше максимального, сообщаем об этом
+        if (minValue > maxValue) {
+            gameText.textContent = `Вы ввели некорректное число.
+            Минимальное значение не может быть больше максимального.
+            Попробуйте ввести заново.`;
+            document.querySelector('.divBtnGameText').style.display = 'none';
+            startGame();
+        } else {
+            // иначе предлагаем загадать число
+            gameText.textContent = `Загадайте любое число от ${minValue} до ${maxValue}`;
+            // запускаем игру
+            document.querySelector('.btnGameText').addEventListener('click', () => {
+                gameStart.style.display = 'none';
+                gameQuestions.style.display = 'block';
+                gameButtons.style.display = 'block';
+                
+                // делим значения пополам и даем средний результат первого вопроса
+                answerNumber = Math.floor((minValue + maxValue) / 2);
+                orderNumber = 1;
+                // запуск игры
+                gameRun = true;
+
+                // вывод значений
+                orderNumberField.textContent = `Вопрос № ${orderNumber}`;
+                answerField.textContent = `Вы загадали число ${numbersToString(answerNumber)}?`;
+            })
+        }  
+    });
 }
 
 // запуск игры
@@ -227,7 +267,7 @@ document.querySelector('#btnOver').addEventListener('click', () => {
 
             // увеличиваем счетчик вопроса
             orderNumber++;
-            orderNumberField.textContent = orderNumber;
+            orderNumberField.textContent = `Вопрос № ${orderNumber}`;;
 
             // рандом из трех вопросов
             const phraseRandom = Math.round(Math.random()*3);
@@ -266,7 +306,7 @@ document.querySelector('#btnLess').addEventListener('click', () => {
 
             // увеличиваем счетчик вопроса
             orderNumber++;
-            orderNumberField.textContent = orderNumber;
+            orderNumberField.textContent = `Вопрос № ${orderNumber}`;;
             
             // рандом из трех вопросов
             const phraseRandom = Math.round(Math.random()*3);

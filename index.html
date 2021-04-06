@@ -16,10 +16,48 @@
                 <div class="card text-center">
 
                     <div class="card-header">
-                        <p class="m-0">Вопрос №<span id="orderNumberField">5</span></p>
+                        <p class="m-0" id="orderNumberField">Угадайка</p>
+                    </div>
+
+                    <div class="card-body gameInput">
+                        <div class="row no-gutters">
+                            <div class="col">
+                                
+                                <form>
+                                    <div class="form-group">
+                                        <label for="minValueForm">Минимальное значение в игре:</label>
+                                        <input type="text" class="form-control minValueForm" 
+                                            placeholder="введите минимальное значение" value="0">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="minValueForm">Максимальное значение в игре:</label>
+                                        <input type="text" class="form-control maxValueForm" 
+                                            placeholder=" введите максимальное значение" value="100">
+                                    </div>
+                                    <div class="form-group">
+                                        <button type="button" class="btn btn-success btnGameInput">Начать игру</button>
+                                    </div>
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-body gameStart">
+                        <div class="row no-gutters">
+                            <div class="col">
+                                
+                                <div class="form-group gameText">
+                                </div>
+                                <div class="form-group divBtnGameText">
+                                    <button type="button" class="btn btn-success btnGameText">Загадал!</button>
+                                </div>
+                                
+                            </div>
+                        </div>
                     </div>
                     	
-                    <div class="card-body">
+                    <div class="card-body gameQuestions">
                         <div class="row no-gutters">
                             <div class="col">
                                 <h3 class="card-title m-0"><span id="answerField">Вы загадали число 5?</span></h3>
@@ -27,7 +65,7 @@
                         </div>
                     </div>
 
-                    <div class="card-body">
+                    <div class="card-body gameButtons">
                         <div class="btn-group">
                             <button class="btn btn-info" id="btnLess">&#128072;<br>меньше</button>
                             <button class="btn btn-success btn-lg" id="btnEqual">Верно!</button>
@@ -35,7 +73,7 @@
                         </div>
                     </div>
 
-                    <div class="card-footer">
+                    <div class="cardFooter">
                         <button type="button" class="btn btn-outline-secondary btn-lg btn-block" id="btnRetry">Заново</button>
                     </div>
                     
