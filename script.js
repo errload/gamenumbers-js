@@ -1,8 +1,8 @@
-let minValue, 
-    maxValue, 
-    answerNumber, 
-    orderNumber, 
-    gameRun;
+let minValue, //  минимальное значение
+    maxValue, // максимальное значение
+    answerNumber, // результат (среднее число)
+    orderNumber, // счетчик вопросов
+    gameRun; // старт игры
 
 const orderNumberField = document.querySelector('#orderNumberField');
 const answerField = document.querySelector('#answerField');
@@ -11,8 +11,10 @@ function numbersToString(numbers) {
 
     let result = '';
     let minus;
+    // разбиываем строку на сотни, десятки, единицы
     const [units, tens, hundreds] = numbers.toString().split('').reverse();
 
+    // массивы чисел в строковой форме
     let unitsMap = new Map([
         ['0', '0'],
         ['1', 'один'],
@@ -62,25 +64,34 @@ function numbersToString(numbers) {
         ['9', 'девятьсот'],
     ]);
 
+    // проверяем есть ли сотни
     if (hundreds != undefined) {
         hundredsMap.forEach((value, key) => {
+            // если ключ равен числу, записываем в результат строковую форму числа
             if (hundreds == key) {
                 result = `${value} `;
             }
         });
     }
 
+    // проверяем есть ли десятки
     if (tens != undefined) {
+        // если нет десятка после сотни, то это единица
         if (tens != 0) {
+            // если она равна 1, то число от 10 до 19
             if (tens == 1) {
+                // берем последние 2 числа, конкатенируем и сравниваем с ключом массива
                 let num = tens + units;
                 tens10To19Map.forEach((value, key) => {
+                    // если ключ равен числу, записываем в результат строковую форму числа
                     if (num == key) {
                         result += `${value} `;
                     }
                 });
+            // иначе десятки есть от 20 до 90
             } else {
                 tensMap.forEach((value, key) => {
+                    // если ключ равен числу, записываем в результат строковую форму числа
                     if (tens == key) {
                         result += `${value} `;
                     }
@@ -89,15 +100,20 @@ function numbersToString(numbers) {
         }
     }
 
+    // проверяем единицы
     if (units != undefined) {
+        // если единица не равно 0 и при этом десяток не равен 1, значит число не 10-19
         if (tens != 1 && units != 0) {
             unitsMap.forEach((value, key) => {
+                // поэтому берем только единицу без нуля
                 if (units == key) {
                     result += `${value} `;
                 }
             });
+        // иначе если десяток больше, чем 10-19
         } else if (tens > 1 && units != 0) {
             unitsMap.forEach((value, key) => {
+                // берем только единицу без нуля
                 if (units == key) {
                     result += `${value} `;
                 }
@@ -105,35 +121,48 @@ function numbersToString(numbers) {
         }
     }
 
+    // если это ноль, то это 0 и никак иначе
     if (numbers.toString() == '0') {
         result = '0';
     }
 
+    // убираем пробелы
     result = result.trim();
     
+    // переводим число в строку для изъятия первого символа
     minus = numbers.toString();
+    // если число отрицательное
     if (parseInt(numbers) < 0) {
+        // и первый символ минус
         if (minus[0] == '-') {
+            // добавляем минус в строковую форму
             result = `минус ${result}`;
         } else {
+            // добавляем минус в числовую форму форму
             result = `- ${result}`;
         }
     }
 
+    // если длина строки больше 20 символов, записываем числом
     if (result.length > 20) {
         result = numbers;
     }
 
+    // возвращаем значение
     return result;
 }
 
 function startGame() {
+    // берем минимальные и максимальные значения
     minValue = parseInt(prompt('Минимальное знание числа для игры','0'));
     maxValue = parseInt(prompt('Максимальное знание числа для игры','100'));
 
+    // проверяем являются ли они число и находятся ли в диапазоне -999 и 999
+    // иначе возвращаем 0 и 100
     minValue = isNaN(minValue) ? 0 : minValue < -999 ? -999 : minValue;
     maxValue = isNaN(maxValue) ? 100 : maxValue > 999 ? 999 : maxValue;
 
+    // если минимальное введено больше максимального, заставляем ввести заново
     if (minValue > maxValue) {
         alert('Вы ввели некорректное число, минимальное значение не может быть больше максимального.');
         startGame();
@@ -141,20 +170,26 @@ function startGame() {
         alert(`Загадайте любое целое число от ${minValue} до ${maxValue}, а я его угадаю!`);
     }
 
+    // делим значения пополам и даем средний результат первого вопроса
     answerNumber = Math.floor((minValue + maxValue) / 2);
     orderNumber = 1;
+    // запуск игры
     gameRun = true;
 
     orderNumberField.textContent = orderNumber;
     answerField.textContent = `Вы загадали число ${numbersToString(answerNumber)}?`;
 }
 
+// запуск игры
 startGame();
-
+// кнопка рестарта игры
 document.querySelector('#btnRetry').addEventListener('click', startGame);
 
+// кнопка верно
 document.querySelector('#btnEqual').addEventListener('click', () => {
+    // если игра запущена
     if (gameRun) {
+        // рандом их трех ответов
         const phraseRandom = Math.round(Math.random()*3);
         const answerPhrase = (phraseRandom === 1) ?
                 `Я всегда угадываю\n\u{1F60E}`:
@@ -162,13 +197,18 @@ document.querySelector('#btnEqual').addEventListener('click', () => {
                 `Тебе меня не победить!\n\u{1F60E}` :
                 `Давай, рискни еще разок!\n\u{1F60E}`;
         answerField.textContent = answerPhrase;
+        // конец игры
         gameRun = false;
     }
 });
 
+// кнопка больше
 document.querySelector('#btnOver').addEventListener('click', () => {
+    // если игры запущена
     if (gameRun) {
+        // если количество вариантов закончилось, а число не угадано
         if (minValue === maxValue) {
+            // рандом из трех ответов
             const phraseRandom = Math.round(Math.random()*3);
             const answerPhrase = (phraseRandom === 1) ?
                 `Вы загадали неправильное число!\n\u{1F636}` :
@@ -177,14 +217,19 @@ document.querySelector('#btnOver').addEventListener('click', () => {
                 `Давай-ка попробую еще разок...\n\u{1F636}`;
 
             answerField.textContent = answerPhrase;
+            // конец игры
             gameRun = false;
         } else {
+            // иначе среднее значение становится минимальным, и далее играем в оставшейся половине
             minValue = answerNumber + 1; 
+            // берем среднее значение двух чисел
             answerNumber = Math.floor((minValue + maxValue) / 2);
 
+            // увеличиваем счетчик вопроса
             orderNumber++;
             orderNumberField.textContent = orderNumber;
 
+            // рандом из трех вопросов
             const phraseRandom = Math.round(Math.random()*3);
             const answerPhrase = (phraseRandom === 1) ?
                 `Вы загадали число ${numbersToString(answerNumber)}?`:
@@ -196,9 +241,13 @@ document.querySelector('#btnOver').addEventListener('click', () => {
     }
 });
 
+// кнопка меньше
 document.querySelector('#btnLess').addEventListener('click', () => {
+    // если игры запущена
     if (gameRun) {
+        // если количество вариантов закончилось, а число не угадано
         if (minValue === maxValue) {
+            // рандом из трех ответов
             const phraseRandom = Math.round(Math.random()*3);
             const answerPhrase = (phraseRandom === 1) ?
                 `Вы загадали неправильное число!\n\u{1F636}` :
@@ -207,14 +256,19 @@ document.querySelector('#btnLess').addEventListener('click', () => {
                 `Давай-ка попробую еще разок...\n\u{1F636}`;
 
             answerField.textContent = answerPhrase;
+            // конец игры
             gameRun = false;
         } else {
+            // иначе среднее значение становится максимальным, и далее играем в оставшейся половине
             maxValue = answerNumber;
+            // берем среднее значение двух чисел
             answerNumber = Math.floor((minValue + maxValue) / 2);
 
+            // увеличиваем счетчик вопроса
             orderNumber++;
             orderNumberField.textContent = orderNumber;
             
+            // рандом из трех вопросов
             const phraseRandom = Math.round(Math.random()*3);
             const answerPhrase = (phraseRandom === 1) ?
                 `Вы загадали число ${numbersToString(answerNumber)}?`:
