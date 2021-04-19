@@ -143,14 +143,8 @@ function numbersToString(numbers) {
     minus = numbers.toString();
     // если число отрицательное
     if (parseInt(numbers) < 0) {
-        // и первый символ минус
-        if (minus[0] == '-') {
-            // добавляем минус в строковую форму
-            result = `минус ${result}`;
-        } else {
-            // добавляем минус в числовую форму форму
-            result = `- ${result}`;
-        }
+        // и первый символ минус добавляем минус в строковую / числову форму
+        minus[0] == '-' ? result = `минус ${result}` : result = `- ${result}`;
     }
 
     // если длина строки больше 20 символов, записываем числом
@@ -242,6 +236,30 @@ document.querySelector('#btnEqual').addEventListener('click', () => {
     }
 });
 
+function answerPhraseTrue() {
+    const phraseRandom = Math.round(Math.random()*3);
+    const answerPhrase = (phraseRandom === 1) ?
+        `Вы загадали неправильное число!\n\u{1F636}` :
+        (phraseRandom === 2) ?
+            `Я сдаюсь...\n\u{1F636}` :
+            `Давай-ка попробую еще разок...\n\u{1F636}`;
+    answerField.textContent = answerPhrase;
+
+    return answerPhrase;
+}
+
+function answerPhraseFalse() {
+    const phraseRandom = Math.round(Math.random()*3);
+    const answerPhrase = (phraseRandom === 1) ?
+        `Вы загадали число ${numbersToString(answerNumber)}?`:
+        (phraseRandom === 2) ?
+            `Да это легко! Число ${numbersToString(answerNumber)}?` :
+            `Наверное, это число ${numbersToString(answerNumber)}?`;
+    answerField.textContent = answerPhrase;
+
+    return answerPhrase;
+}
+
 // кнопка больше
 document.querySelector('#btnOver').addEventListener('click', () => {
     // если игры запущена
@@ -249,14 +267,7 @@ document.querySelector('#btnOver').addEventListener('click', () => {
         // если количество вариантов закончилось, а число не угадано
         if (minValue === maxValue) {
             // рандом из трех ответов
-            const phraseRandom = Math.round(Math.random()*3);
-            const answerPhrase = (phraseRandom === 1) ?
-                `Вы загадали неправильное число!\n\u{1F636}` :
-                (phraseRandom === 2) ?
-                `Я сдаюсь...\n\u{1F636}` :
-                `Давай-ка попробую еще разок...\n\u{1F636}`;
-
-            answerField.textContent = answerPhrase;
+            answerPhraseTrue();
             // конец игры
             gameRun = false;
         } else {
@@ -270,13 +281,7 @@ document.querySelector('#btnOver').addEventListener('click', () => {
             orderNumberField.textContent = `Вопрос № ${orderNumber}`;;
 
             // рандом из трех вопросов
-            const phraseRandom = Math.round(Math.random()*3);
-            const answerPhrase = (phraseRandom === 1) ?
-                `Вы загадали число ${numbersToString(answerNumber)}?`:
-                (phraseRandom === 2) ?
-                `Да это легко! Число ${numbersToString(answerNumber)}?` :
-                `Наверное, это число ${numbersToString(answerNumber)}?`;
-            answerField.textContent = answerPhrase;
+            answerPhraseFalse();
         }
     }
 });
@@ -288,14 +293,7 @@ document.querySelector('#btnLess').addEventListener('click', () => {
         // если количество вариантов закончилось, а число не угадано
         if (minValue === maxValue) {
             // рандом из трех ответов
-            const phraseRandom = Math.round(Math.random()*3);
-            const answerPhrase = (phraseRandom === 1) ?
-                `Вы загадали неправильное число!\n\u{1F636}` :
-                (phraseRandom === 2) ?
-                `Я сдаюсь...\n\u{1F636}` :
-                `Давай-ка попробую еще разок...\n\u{1F636}`;
-
-            answerField.textContent = answerPhrase;
+            answerPhraseTrue();
             // конец игры
             gameRun = false;
         } else {
@@ -309,13 +307,7 @@ document.querySelector('#btnLess').addEventListener('click', () => {
             orderNumberField.textContent = `Вопрос № ${orderNumber}`;;
             
             // рандом из трех вопросов
-            const phraseRandom = Math.round(Math.random()*3);
-            const answerPhrase = (phraseRandom === 1) ?
-                `Вы загадали число ${numbersToString(answerNumber)}?`:
-                (phraseRandom === 2) ?
-                `Да это легко! Ты загадал ${numbersToString(answerNumber)}?` :
-                `Наверное, это число ${numbersToString(answerNumber)}?`;
-            answerField.textContent = answerPhrase;
+            answerPhraseFalse();
         }
     }
 });
